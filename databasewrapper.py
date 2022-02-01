@@ -1,7 +1,7 @@
-import sqlite3
-from sqlite3 import Error
 import sys
-import sql_expressions as sql_exp
+import sqlite3
+from schemas import sql_exp
+from sqlite3 import Error
 
 
 class DatabaseWrapper:
@@ -29,7 +29,7 @@ class DatabaseWrapper:
         conn = None
 
         try:
-            conn = sqlite3.connect(self._config["db"]["path"])
+            conn = sqlite3.connect(self._config["db"]["file_name"])
             self._log(f"Connected to database. Sqlite3 ver: {sqlite3.version}")
             return conn
         except Error as e:
@@ -46,7 +46,7 @@ class DatabaseWrapper:
             # Create cursor
             c = self._conn.cursor()
 
-            c.execute(sql_exp["crete_vlans_table"])
+            c.execute(sql_exp["create_vlans_table"])
             c.execute(sql_exp["create_hosts_table"])
             c.execute(sql_exp["create_addresses_table"])
         

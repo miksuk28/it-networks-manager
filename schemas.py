@@ -1,4 +1,4 @@
-sql = {
+sql_exp = {
     "create_hosts_table":
      '''
         CREATE TABLE IF NOT EXISTS hosts (

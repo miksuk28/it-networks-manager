@@ -1,6 +1,6 @@
 config = {
     "debug": True,
     "db": {
-        "path": "."
+        "file_name": "data.db"
     }
 }
