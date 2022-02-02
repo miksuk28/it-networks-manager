@@ -13,6 +13,7 @@ class DatabaseWrapper:
         self._conn = self._create_connection()
 
         if type(self._debug) != bool:
+            self._conn.close()
             raise IncorrectConfig("debug")
         
 
@@ -34,10 +35,13 @@ class DatabaseWrapper:
         try:
             conn = sqlite3.connect(self._config["db"]["file_name"])
             self._log(f"Connected to database. Sqlite3 ver: {sqlite3.version}")
+            
             return conn
         except Error as e:
             self._log(e)
+            self._conn.close()
             sys.exit("Fatal Error Has occured. Execution cannot continue")
+
 
     # Replaces by .sql file
     '''
@@ -52,5 +56,6 @@ class DatabaseWrapper:
         
         except Error as e:
             self._log(e)
+            self._close_conn()
             raise CouldNotCreateTables(e)
     '''
