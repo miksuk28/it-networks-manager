@@ -1,31 +1,24 @@
-DROP TABLE IF EXISTS hosts;
-CREATE TABLE hosts (
-    id          integer     PRIMARY KEY     NOT NULL,
+
+CREATE TABLE IF NOT EXISTS hosts (
+    host_id     integer     PRIMARY KEY     NOT NULL,
     hostname    text        NOT NULL,
-    vlan_id     integer,
-    description text,
-    FOREIGN KEY (vlan_id)   REFERENCES vlans (id)
-);
-
-DROP TABLE IF EXISTS vlans;
-CREATE TABLE vlans (
-    id          integer     PRIMARY KEY     NOT NULL,
-    vlan_id     integer     NOT NULL        UNIQUE,
     name        text        UNIQUE,
-    ip_start    text        NOT NULL,
-    ip_end      text        NOT NULL,
-    netmask     integer     NOT NULL
-    
-    CHECK (netmask >= 0 AND netmask <= 32)
+    description text
 );
 
-DROP TABLE IF EXISTS address;
-CREATE TABLE addresses (
-    id          integer     PRIMARY KEY     NOT NULL,
-    address     text        NOT NULL,
-    netmask     integer     NOT NULL,
-    host_id     integer     NOT NULL,
-    FOREIGN KEY (host_id)   REFERENCES hosts (id)
+CREATE TABLE IF NOT EXISTS vlans (
+    vlan_id     integer     PRIMARY KEY     NOT NULL,
+    vlan_net_id integer     NOT NULL        UNIQUE,
+    ip_range    text        NOT NULL,
+    name        text        UNIQUE,
+    description text,
+);
 
-    CHECK (netmask >= 0 AND netmask <= 32)
+CREATE TABLE IF NOT EXISTS interfaces (
+    iface_id    integer     PRIMARY KEY     NOT NULL,
+    host_id     integer     NOT NULL,
+    address     text,
+    description text,
+    mac         text        UNIQUE,
+    FOREIGN KEY (host_id)   REFERENCES hosts (id) ON DELETE CASCADE
 );
